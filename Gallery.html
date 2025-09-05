@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery | Platz International</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- AOS Animation -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #fafafa url('https://www.transparenttextures.com/patterns/cubes.png');
+      background-size: 300px;
+      color: #333;
+      line-height: 1.7;
+      scroll-behavior: smooth;
+    }
+    h1, h2 {
+      font-weight: 700;
+      color: #003366;
+    }
+    section {
+      padding: 80px 20px;
+      max-width: 1200px;
+      margin: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Navbar */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 25px;
+      z-index: 1000;
+    }
+    nav .logo img {
+      height: 50px;
+      width: auto;
+    }
+    nav .links {
+      display: flex;
+      gap: 20px;
+    }
+    nav .links a {
+      color: #fff;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    nav .links a:hover { color: #d4af37; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* Mobile Menu */
+    @media (max-width: 768px) {
+      nav .links {
+        position: absolute;
+        top: 70px;
+        right: 0;
+        background: rgba(0,0,0,0.9);
+        flex-direction: column;
+        width: 200px;
+        padding: 20px;
+        display: none;
+        border-radius: 8px 0 0 8px;
+      }
+      nav .links.active { display: flex; }
+      .hamburger { display: block; }
+    }
+
+    /* Gallery Grid */
+    .gallery-header {
+      text-align: center;
+      margin-top: 100px;
+      margin-bottom: 40px;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+    .gallery-caption {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      padding: 12px;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    /* Decorative Waves */
+    .wave {
+      position: relative;
+      margin-top: -80px;
+    }
+    .wave svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Floating Buttons */
+    .floating-buttons {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 2000;
+    }
+    .fab-btn {
+      position: relative;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.4rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.3s, background 0.3s;
+      text-decoration: none;
+    }
+    .fab-btn:hover { transform: scale(1.1); }
+    .whatsapp { background: #25D366; }
+    .email { background: #d44638; }
+    .call { background: #003366; }
+    .tooltip {
+      position: absolute;
+      right: 60px;
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      font-size: 0.8rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(10px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+    .fab-btn:hover .tooltip {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Footer */
+    footer {
+      background: #003366;
+      color: #fff;
+      text-align: center;
+      padding: 25px 15px;
+      margin-top: 60px;
+    }
+    footer p {
+      margin: 8px 0;
+      font-size: 0.9rem;
+    }
+    .footer-socials {
+      margin-top: 12px;
+    }
+    .footer-socials a {
+      color: #fff;
+      margin: 0 8px;
+      font-size: 1.2rem;
+      transition: color 0.3s, transform 0.3s;
+      display: inline-block;
+    }
+    .footer-socials a:hover {
+      color: #d4af37;
+      transform: scale(1.2);
+    }
+    @media (max-width: 480px) {
+  .gallery-header {
+    margin-top: 70px;
+  }
+}
+/* Make videos behave like images */
+.gallery-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* Keeps it cropped like images */
+  display: block;
+  transition: transform 0.4s ease;
+  border-radius: 12px;
+}
+
+/* Zoom effect on hover (same as images) */
+.gallery-item:hover video {
+  transform: scale(1.1);
+}
+/* 3 images row */
+.gallery-grid.three-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* Video row takes full width */
+.gallery-grid.video-row {
+  margin-top: 30px;
+}
+
+.gallery-grid.video-row .gallery-item {
+  grid-column: 1 / -1; /* span full width */
+}
+
+/* Video styling */
+.gallery-grid.video-row video {
+  width: 100%;
+  height: 400px;   /* make video bigger than images */
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.gallery-grid.video-row .gallery-item:hover video {
+  transform: scale(1.05);
+}
+
+/* Responsive fix: on small screens, stack images */
+@media (max-width: 768px) {
+  .gallery-grid.three-cols {
+    grid-template-columns: 1fr;
+  }
+  .gallery-grid.video-row video {
+    height: 250px;
+  }
+}
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <a href="index.html" class="logo">
+      <img src="company logo.jpg" alt="Platz International Logo">
+    </a>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="about us.html">About</a>
+      <a href="Gallery.html">Gallery</a>
+      <a href="services page.html">Services</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+    <div class="hamburger"><i class="fas fa-bars"></i></div>
+  </nav>
+
+  <!-- Gallery Header -->
+  <section class="gallery-header" data-aos="fade-up">
+    <h1>Our Work in Action</h1>
+    <p>Take a look at some of the events and security solutions we have successfully delivered.</p>
+  </section>
+
+  <!-- Decorative Wave -->
+  <div class="wave">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200">
+      <path fill="#003366" fill-opacity="1" d="M0,96L80,117.3C160,139,320,181,480,176C640,171,800,117,960,96C1120,75,1280,85,1360,90.7L1440,96L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path>
+    </svg>
+  </div>
+
+<!-- Gallery Grid -->
+<section>
+  <!-- 3 Images Row -->
+  <div class="gallery-grid three-cols">
+    <div class="gallery-item" data-aos="zoom-in" onclick="redirectToServices()">
+      <img src="security bosses.jpg" alt="Corporate Event">
+      <div class="gallery-caption">Corporate Event Setup</div>
+    </div>
+    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100" onclick="redirectToServices()">
+      <img src="https://i.pinimg.com/1200x/c7/2e/7c/c72e7c451c58d102c4247a107354be90.jpg" alt="Concert Security">
+      <div class="gallery-caption">Concert Security Deployment</div>
+    </div>
+    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200" onclick="redirectToServices()">
+      <img src="vip.jpeg" alt="VIP Protection">
+      <div class="gallery-caption">VIP Protection Detail</div>
+    </div>
+  </div>
+
+  <!-- Video Row -->
+  <div class="gallery-grid video-row">
+    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300">
+      <video autoplay muted loop playsinline>
+        <source src="advert vid.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="gallery-caption">Event Highlights</div>
+    </div>
+  </div>
+</section>
+
+
+
+</section>
+
+
+  <!-- Decorative Wave -->
+  <div class="wave">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200">
+      <path fill="#d4af37" fill-opacity="1" d="M0,64L60,101.3C120,139,240,213,360,229.3C480,245,600,203,720,186.7C840,171,960,181,1080,192C1200,203,1320,213,1380,218.7L1440,224L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path>
+    </svg>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Platz International Limited. All Rights Reserved.</p>
+    <p>📍 P.O. BOX 436-00300, Nairobi, Kenya</p>
+    <p>📞 +254 700 682 556 | +254 718 680 098 &nbsp; | &nbsp; ✉️ platzinternational@gmail.com</p>
+    <div class="footer-socials">
+      <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+      <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+      <a href="https://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+  </footer>
+
+  <!-- Floating Action Buttons -->
+   <section id="contact">
+  <div class="floating-buttons">
+    <!-- WhatsApp -->
+    <a href="https://wa.me/254700682556?text=Hello%20Platz%20International,%20I%20would%20like%20to%20inquire%20about%20your%20services." 
+       target="_blank" class="fab-btn whatsapp">
+      <i class="fab fa-whatsapp"></i>
+      <span class="tooltip">Chat on WhatsApp</span>
+    </a>
+    <!-- Email -->
+    <a href="mailto:platzinternational@gmail.com?subject=Service%20Inquiry&body=Hello%20Platz%20International,%20I%20would%20like%20to%20learn%20more%20about%20your%20services." 
+       class="fab-btn email">
+      <i class="fas fa-envelope"></i>
+      <span class="tooltip">Send us an Email</span>
+    </a>
+    <!-- Call -->
+    <a href="tel:+254700682556" class="fab-btn call">
+      <i class="fas fa-phone"></i>
+      <span class="tooltip">Call Us</span>
+    </a>
+  </div>
+</section>
+  <!-- AOS JS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: false });
+
+    // Mobile menu toggle
+    const hamburger = document.querySelector(".hamburger");
+    const navLinks = document.querySelector(".links");
+    hamburger.addEventListener("click", () => {
+      navLinks.classList.toggle("active");
+      hamburger.innerHTML = navLinks.classList.contains("active")
+        ? '<i class="fas fa-times"></i>'
+        : '<i class="fas fa-bars"></i>';
+    });
+   
+  function redirectToServices() {
+    window.location.href = "services page.html"; // change to your actual services page URL if different
+  }
+
+
+  </script>
+</body>
+</html>
